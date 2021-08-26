@@ -13,10 +13,7 @@ import java.util.regex.Pattern;
 
 @WebServlet(
         description = "Login Testing",
-        urlPatterns = {"/LogInServlet"},
-        initParams = {
-                @WebInitParam(name = "pwd" , value = "123")
-        }
+        urlPatterns = {"/LogInServlet"}
 )
 
 public class LogInServlet extends HttpServlet {
@@ -27,9 +24,9 @@ public class LogInServlet extends HttpServlet {
         String pwd = req.getParameter("pwd");
 
         boolean isTrueName = Pattern.compile("^[A-Z]{1}[A-z a-z]{2,}$").matcher(user).matches();
-        String password = getServletConfig().getInitParameter("pwd");
+        boolean isTruePassword = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$").matcher(pwd).matches();
 
-        if (isTrueName && password.equals(pwd)){
+        if (isTrueName == true && isTruePassword == true){
             req.setAttribute("user",user);
             req.getRequestDispatcher("Success.jsp").forward(req,resp);
         }
