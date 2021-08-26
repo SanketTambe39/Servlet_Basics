@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Pattern;
 
 @WebServlet(
         description = "Login Testing",
         urlPatterns = {"/LogInServlet"},
         initParams = {
-                @WebInitParam(name = "user" , value = "Sanket"),
                 @WebInitParam(name = "pwd" , value = "123")
         }
 )
@@ -26,10 +26,10 @@ public class LogInServlet extends HttpServlet {
         String user = req.getParameter("user");
         String pwd = req.getParameter("pwd");
 
-        String userID = getServletConfig().getInitParameter("user");
+        boolean isTrueName = Pattern.compile("^[A-Z]{1}[A-z a-z]{2,}$").matcher(user).matches();
         String password = getServletConfig().getInitParameter("pwd");
 
-        if (userID.equals(user) && password.equals(pwd)){
+        if (isTrueName && password.equals(pwd)){
             req.setAttribute("user",user);
             req.getRequestDispatcher("Success.jsp").forward(req,resp);
         }
